@@ -2,20 +2,20 @@
 <h3>{{Titulo}} <small>{{TituloAccionABMC[AccionABMC]}}</small></h3>
 <!-- Formulario Filtro de búsqueda, se ve cuando la AccionABMC es
 "L"(busqueda/listado)-->
-<form name="FormBusqueda" class="bg-light" *ngIf="AccionABMC == 'L'">
+<form name="FormBusqueda" [formGroup]='FormBusqueda' class="bg-light" *ngIf="AccionABMC == 'L'" >
     <div class="form-group row">
     <label class="col-form-label col-sm-2 offset-sm-1">
     Nombre:
     </label>
     <div class="col-sm-3">
-        <input type="text" name="Nombre" class="form-control" />
+        <input type="text" name="Nombre" class="form-control" formControlName="Nombre"/>
         </div>
         <label class="col-form-label col-sm-2 offset-sm-1">
         Activo:
         </label>
         <div class="col-sm-3">
-        <select class="form-control" name="Activo" >
-        <option *ngFor="let opt of OpcionesActivo">
+        <select class="form-control" name="Activo" formControlName="Nombre">
+        <option *ngFor="let opt of OpcionesActivo" formControlName="Nombre" [ngValue]="opt.Id">
         {{ opt.Nombre }}
         </option>
         </select>
@@ -24,11 +24,11 @@
         <!-- Botones -->
         <div class="row justify-content-center">
         <button type="button" class="btn btn-primary"
-        (click)="Pagina=1;Buscar();">
+        (click)="Pagina=1;Buscar();" formControlName="Nombre">
         <i class="fa fa-search"> </i> Buscar
         </button>
         &nbsp;
-        <button type="button" class="btn btn-primary" (click)="Agregar()">
+        <button type="button" class="btn btn-primary" (click)="Agregar()" formControlName="Nombre">
         <i class="fa fa-plus"> </i>
         Agregar
         </button>
@@ -98,7 +98,7 @@ Directiva paginador aqui
     <!-- texto: No se encontraron registros -->
     </div>
 
-    <form name="FormRegistro" class="bg-light" *ngIf="AccionABMC != 'L'">
+    <form name="FormRegistro" [formGroup]='FormRegistro' class="bg-light" *ngIf="AccionABMC != 'L'" >
         <fieldset [disabled]="AccionABMC==='C'">
         <!--campo nombre-->
         <div class="form-group row">
@@ -106,7 +106,7 @@ Directiva paginador aqui
         Nombre <span class="text-danger">*</span>
         </label>
         <div class="col-sm-6">
-        <input type="text" class="form-control" />
+        <input type="text" class="form-control" formControlName="Nombre"/>
         </div>
         </div>
         <!--campo precio-->
@@ -115,7 +115,7 @@ Directiva paginador aqui
         Precio <span class="text-danger">*</span>
         </label>
         <div class="col-sm-6">
-        <input type="text" name="Precio" class="form-control" />
+        <input type="text" name="Precio" class="form-control" formControlName="Nombre"/>
         </div>
 
     </div>
@@ -125,7 +125,7 @@ Directiva paginador aqui
     Stock <span class="text-danger">*</span>
     </label>
     <div class="col-sm-6">
-    <input type="text" name="Stock" class="form-control" />
+    <input type="text" name="Stock" class="form-control" formControlName="Nombre"/>
     </div>
     </div>
     <!--campo codigodebarra-->
@@ -134,7 +134,7 @@ Directiva paginador aqui
     Codigo De Barra <span class="text-danger">*</span>
     </label>
     <div class="col-sm-6">
-    <input type="text" name="CodigoDeBarra" class="form-control" />
+    <input type="text" name="CodigoDeBarra" class="form-control" formControlName="Nombre"/>
     </div>
     </div>
     <!--campo idarticulofamilia-->
@@ -143,8 +143,8 @@ Directiva paginador aqui
     Familia <span class="text-danger">*</span>
     </label>
     <div class="col-sm-6">
-    <select name="IdArticuloFamilia" class="form-control">
-    <option *ngFor="let opt of Familias">
+    <select name="IdArticuloFamilia" class="form-control" formControlName="Nombre">
+    <option *ngFor="let opt of Familias" formControlName="Nombre" [ngValue]="opt.IdArticuloFamilia">
     {{ opt.Nombre }}
     </option>
     </select>
@@ -158,15 +158,15 @@ Directiva paginador aqui
 
     <div class="col-sm-6">
         <input class="form-control"
-        name="FechaAlta" />
+        name="FechaAlta" formControlName="Nombre"/>
         </div>
         </div>
         <!--campo activo-->
         <div class="form-group row">
         <label class="col-form-label col-sm-2 offset-sm-2" for="Activo">Activo</label>
         <div class="col-sm-6">
-        <select name="Activo" [attr.disabled]="true" class="form-control">
-        <option *ngFor="let opt of OpcionesActivo">
+        <select name="Activo" [attr.disabled]="true" class="form-control" formControlName="Nombre">
+        <option *ngFor="let opt of OpcionesActivo" formControlName="Nombre" [ngValue]="opt.Id">
         {{ opt.Nombre }}
         </option>
         </select>
@@ -175,11 +175,11 @@ Directiva paginador aqui
         </fieldset>
         <!-- Botones Grabar, Cancelar/Volver' -->
         <div class="row justify-content-center">
-        <button type="button" class="btn btn-primary" (click)="Grabar()" *ngIf=" AccionABMC == 'A' || AccionABMC == 'M'" >
+        <button type="button" class="btn btn-primary" (click)="Grabar()" *ngIf=" AccionABMC == 'A' || AccionABMC == 'M'" formControlName="Nombre">
         <i class="fa fa-check"></i> Grabar
         </button>
         &nbsp;
-        <button type="button" class="btn btn-warning" (click)="Volver()">
+        <button type="button" class="btn btn-warning" (click)="Volver()" formControlName="Nombre">
         <i class="fa fa-undo"></i>  {{AccionABMC == 'A' || AccionABMC ==
         'M' ? 'Cancelar' : 'Volver'}}        
         </button>
