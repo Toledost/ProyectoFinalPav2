@@ -4,7 +4,7 @@ import { HttpClientModule } from "@angular/common/http";
 import { RouterModule } from '@angular/router';
 import {APP_BASE_HREF} from '@angular/common';
 import { ReactiveFormsModule } from "@angular/forms";
-
+import { NgbPaginationModule } from "@ng-bootstrap/ng-bootstrap";
 
 import { AppComponent } from './app.component';
 import { InicioComponent } from './components/inicio/inicio.component';
@@ -24,6 +24,7 @@ import { ArticulosComponent } from './components/articulos/articulos.component';
     HttpClientModule,
     BrowserModule,
     ReactiveFormsModule,
+    NgbPaginationModule,
     RouterModule.forRoot([
       { path: '', redirectTo: '/inicio', pathMatch: 'full' },
       { path: 'inicio', component: InicioComponent },
