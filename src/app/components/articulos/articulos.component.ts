@@ -23,6 +23,7 @@ export class ArticulosComponent implements OnInit {
     C: "(Consultar)",
     L: "(Listado)"
   };
+  submitted = false;
 
   AccionABMC : keyof ArticulosComponent["TituloAccionABMC"] = "L" 
   // inicia en el listado de articulos (buscar con parametros)
@@ -63,6 +64,9 @@ export class ArticulosComponent implements OnInit {
   
     
   Agregar() {
+    this.submitted = false;
+    this.FormRegistro.markAsUntouched();  // funcionalidad ya incluida en el FormRegistro.Reset…
+
     this.AccionABMC = "A";
     this.FormRegistro.reset({ Activo: true, IdArticulo: 0 });
   }
@@ -100,6 +104,9 @@ export class ArticulosComponent implements OnInit {
     
   // comienza la modificacion, luego la confirma con el metodo Grabar
   Modificar(Item:Articulo) {
+    this.submitted = false;
+    this.FormRegistro.markAsUntouched();  // funcionalidad ya incluida en el FormRegistro.Reset…
+
     if (!Item.Activo) {
       alert("No puede modificarse un registro Inactivo.");
       return;
@@ -108,6 +115,11 @@ export class ArticulosComponent implements OnInit {
   }
   // grabar tanto altas como modificaciones
   Grabar() {
+    if (this.FormRegistro.invalid) {
+      return;
+    }
+    this.submitted = true;
+
     //hacemos una copia de los datos del formulario, para modificar la fecha y luego enviarlo al servidor
     const itemCopy = { ...this.FormRegistro.value };
     //convertir fecha de string dd/MM/yyyy a ISO para que la entienda webapi
@@ -161,15 +173,34 @@ export class ArticulosComponent implements OnInit {
     Activo: new FormControl(null),
   });
   FormRegistro = new FormGroup({
-      IdArticulo: new FormControl(0),
-      Nombre: new FormControl(''),
-      Precio: new FormControl(null),
-      Stock: new FormControl(null),
-      CodigoDeBarra: new FormControl (''),
-      IdArticuloFamilia: new FormControl(''),
-      FechaAlta: new FormControl(''),
-      Activo: new FormControl(true),
+    IdArticulo: new FormControl(0),
+    Nombre: new FormControl('', [
+      Validators.required,
+      Validators.minLength(4),
+      Validators.maxLength(55),
+    ]),
+    Precio: new FormControl(null, [
+      Validators.required,
+      Validators.pattern('[0-9]{1,7}'),
+    ]),
+    Stock: new FormControl(null, [
+      Validators.required,
+      Validators.pattern('[0-9]{1,7}'),
+    ]),
+    CodigoDeBarra: new FormControl('', [
+      Validators.required,
+      Validators.pattern('[0-9]{13}'),
+    ]),
+    IdArticuloFamilia: new FormControl('', [Validators.required]),
+    FechaAlta: new FormControl('', [
+      Validators.required,
+      Validators.pattern(
+        '(0[1-9]|[12][0-9]|3[01])[-/](0[1-9]|1[012])[-/](19|20)[0-9]{2}'
+      ),
+    ]),
+    Activo: new FormControl(true),
   });
+
 }
 
 
